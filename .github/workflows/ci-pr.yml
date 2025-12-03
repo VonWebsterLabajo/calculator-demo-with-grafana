@@ -23,9 +23,9 @@ jobs:
         id: send_remote_tests
         uses: actions/github-script@v7
         env:
-          TARGET_OWNER: "jmiguelcheq"
-          TARGET_REPO: "calculator-test-demo"
-          CALC_URL: "https://jmiguelcheq.github.io/calculator-demo"
+          TARGET_OWNER: "VonWebsterLabajo"
+          TARGET_REPO: "calculator-test-demo-with-grafana"
+          CALC_URL: "https://vonwebsterlabajo.github.io/calculator-test-demo-with-grafana"
         with:
           github-token: ${{ secrets.CI_PAT }}
           script: |
@@ -52,8 +52,8 @@ jobs:
         id: wait_remote_tests
         uses: actions/github-script@v7
         env:
-          TARGET_OWNER: "jmiguelcheq"
-          TARGET_REPO: "calculator-test-demo"
+          TARGET_OWNER: "VonWebsterLabajo"
+          TARGET_REPO: "calculator-test-demo-with-grafana"
           DISPATCHED_AT: ${{ steps.send_remote_tests.outputs.dispatched_at }}
         with:
           github-token: ${{ secrets.CI_PAT }}
@@ -102,7 +102,7 @@ jobs:
           RUN_URL: ${{ steps.wait_remote_tests.outputs.run_url }}
           CONCLUSION: ${{ steps.wait_remote_tests.outputs.conclusion }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.CICD_TOKEN }}
           script: |
             const state = (process.env.CONCLUSION === 'success') ? 'success' : 'failure';
             await github.rest.repos.createCommitStatus({
@@ -119,7 +119,7 @@ jobs:
           RUN_URL: ${{ steps.wait_remote_tests.outputs.run_url }}
           CONCLUSION: ${{ steps.wait_remote_tests.outputs.conclusion }}
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.CICD_TOKEN }}
           script: |
             const runUrl = process.env.RUN_URL;
             const conclusion = (process.env.CONCLUSION || 'failure').toUpperCase();
